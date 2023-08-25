@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rive_animation/screens/onboding/onboarding_screen.dart';
+import 'package:rive_animation/screens/onboarding/onboarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
