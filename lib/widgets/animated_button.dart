@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rive/rive.dart';
 
+
 class AnimatedButton extends StatelessWidget {
   const AnimatedButton({
     Key? key,
@@ -28,7 +29,7 @@ class AnimatedButton extends StatelessWidget {
                   children: const [
                     Icon(CupertinoIcons.arrow_right),
                     SizedBox(width: 10,),
-                    Text('Start the course',
+                    Text('Sign In',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                         )),

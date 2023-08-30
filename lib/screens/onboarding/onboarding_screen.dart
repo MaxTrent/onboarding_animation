@@ -1,12 +1,8 @@
 import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart';
-
-import '../../components/components.dart';
 import '../../widgets/widgets.dart';
+import 'package:lorem_ipsum/lorem_ipsum.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -17,6 +13,8 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   late RiveAnimationController _buttonAnimationController;
+  bool isSignInDialogShown = false;
+  String lorem = loremIpsum(words: 25);
 
   @override
   void initState() {
@@ -27,6 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           const RiveAnimation.asset(
@@ -47,68 +46,72 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
             child: const SizedBox(),
           )),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Spacer(
-                    flex: 2,
-                  ),
-                  SizedBox(
-                    width: 260,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Learn design & code',
-                          style: TextStyle(
-                            fontSize: 60,
-                            fontFamily: 'Poppins',
-                            height: 1.2,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                            'Don’t skip design. Learn design and code, by building real apps with Flutter. Complete courses about the best tools.'),
-                      ],
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 240),
+            top: isSignInDialogShown ? -50 : 0,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Spacer(
+                      flex: 2,
                     ),
-                  ),
-                  const Spacer(flex: 2),
-                  AnimatedButton(
-                    buttonAnimationController: _buttonAnimationController,
-                    press: () {
-                      _buttonAnimationController.isActive = true;
-                      Future.delayed(
-                        const Duration(milliseconds: 800),
-                            () {
-                          setState(() {
-                            isSignInDialogShown = true;
-                          });
-                          // Let's add the slide animation while dialog shows
-                          customSignInDialog(
-                            context,
-                            onClosed: (_) {
-                              setState(() {
-                                isSignInDialogShown = false;
-                              });
-                            },
-                          );
-                        },
-                      );
+                    SizedBox(
+                      width: 300,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Welcome',
+                            style: TextStyle(
+                              fontSize: 60,
+                              fontFamily: 'Poppins',
+                              height: 1.2,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(lorem),
+                        ],
+                      ),
+                    ),
+                    const Spacer(flex: 2),
+                    AnimatedButton(
+                      buttonAnimationController: _buttonAnimationController,
+                      press: () {
+                        _buttonAnimationController.isActive = true;
+                        Future.delayed(
+                          const Duration(milliseconds: 800),
+                              () {
+                            setState(() {
+                              isSignInDialogShown = true;
+                            });
+                            SignInDialog(
+                              context,
+                              onClosed: (_) {
+                                setState(() {
+                                  isSignInDialogShown = false;
+                                });
+                              },
+                            );
+                          },
+                        );
 
-                    },
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 24.0),
-                    child: Text(
-                        'Purchase includes access to 30+ courses, 240+ premium tutorials, 120+ hours of videos, source files and certificates.',
-                    textAlign: TextAlign.center,),
-                  )
-                ],
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24.0),
+                      child: Text(
+                          lorem,
+                      textAlign: TextAlign.center,),
+                    )
+                  ],
+                ),
               ),
             ),
           )
