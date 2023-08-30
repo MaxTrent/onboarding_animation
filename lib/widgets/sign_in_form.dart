@@ -19,6 +19,7 @@ class _SignInFormState extends State<SignInForm> {
   late SMITrigger error;
   late SMITrigger confetti;
   bool isLoadingShown = false;
+  bool isConfettiShown = false;
 
   StateMachineController? getRiveController(Artboard artboard) {
     final controller =
@@ -30,27 +31,37 @@ class _SignInFormState extends State<SignInForm> {
   void signIn(BuildContext context) {
     setState(() {
       isLoadingShown = true;
+      isConfettiShown = true;
     });
-    Future.delayed(const Duration(seconds: 1), (){
-      if (_formKey.currentState!.validate()) {
-        check.fire();
-        Future.delayed(const Duration(seconds: 2), (){
-          setState(() {
-            isLoadingShown = false;
-          });
-          confetti.fire();
-        });
-      } else {
-        error.fire();
-        Future.delayed(const Duration(seconds: 2), (){
-          setState(() {
-            isLoadingShown = false;
-          });
-        });
-      }
-    });
+    Future.delayed(
+      const Duration(seconds: 1),
+          () {
+        if (_formKey.currentState!.validate()) {
+          check.fire();
+          Future.delayed(
+            const Duration(seconds: 2),
+                () {
+              setState(() {
+                isLoadingShown = false;
+              });
+              confetti.fire();
+            },
+          );
+        } else {
+          // or error animation
+          error.fire();
+          Future.delayed(
+            const Duration(seconds: 2),
+                () {
+              setState(() {
+                isLoadingShown = false;
+              });
+            },
+          );
+        }
+      },
+    );
   }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -107,7 +118,9 @@ class _SignInFormState extends State<SignInForm> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8, bottom: 24),
                   child: ElevatedButton.icon(
-                    onPressed: (){signIn(context);},
+                    onPressed: () {
+                      signIn(context);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFF77D8E),
                       minimumSize: const Size(double.infinity, 56),
@@ -142,17 +155,19 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               )
             : const SizedBox(),
-        CustomPositioned(child: Transform.scale(
-          scale: 8,
-          child: RiveAnimation.asset(
-            'assets/RiveAssets/confetti.riv',
-            onInit: (artboard) {
-              final controller = getRiveController(artboard);
-              confetti = controller!.findSMI('Trigger explosion') as SMITrigger;
-
-            },
+        isConfettiShown ? CustomPositioned(
+          child: Transform.scale(
+            scale: 8,
+            child: RiveAnimation.asset(
+              'assets/RiveAssets/confetti.riv',
+              onInit: (artboard) {
+                final controller = getRiveController(artboard);
+                confetti =
+                    controller!.findSMI('Trigger explosion') as SMITrigger;
+              },
+            ),
           ),
-        ),)
+        ) : const SizedBox()
       ],
     );
   }
