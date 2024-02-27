@@ -1,16 +1,4 @@
-# rive_animation
+Onboarding animation with Rive and Flutter
 
-A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[device-2024-02-27-144831.webm](https://github.com/MaxTrent/onboarding_animation/assets/83916293/4a9ab77b-492e-41d4-9ef8-ba3d66487eba)
